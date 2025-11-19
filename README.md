@@ -33,8 +33,10 @@ vercel.json             # Configuración de build y rewrites SPA
 2. Las pantallas de datos (`Índice de Precios`, `Reviews`) consumen `src/data/mockData.js`, que puedes ajustar fácilmente.
 
 ## Despliegue en Vercel
-1. `vercel link` dentro del directorio `frontend-Original`.
-2. Deploy (`vercel --prod` o desde la UI).  
+1. Importar repositorio desde Vercel Dashboard.
+2. Configurar variables de entorno en Settings > Environment Variables:
+   - `REACT_APP_BACKEND_URL`: URL de tu API en producción
+3. Deploy automático en cada push a main.
    - El build usa `npm run build` y publica `/build`.
    - Los rewrites de `vercel.json` garantizan SPA routing.
 
