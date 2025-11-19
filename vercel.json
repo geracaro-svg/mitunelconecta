@@ -1,12 +1,15 @@
 {
   "version": 2,
-  "framework": "create-react-app",
   "buildCommand": "npm run build",
   "outputDirectory": "build",
   "installCommand": "npm install",
-  "devCommand": "npm start",
+  "functions": {
+    "src/pages/*.js": {
+      "runtime": "@vercel/node"
+    }
+  },
   "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
     {
