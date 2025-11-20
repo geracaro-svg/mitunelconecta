@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { ArrowLeft, MapPin, Upload, Loader2, AlertCircle } from "lucide-react";
+import { saveVendedorData } from "@/lib/supabase";
 
 const CENTRO_ZAMORA = { lat: 19.9855, lon: -102.2833 };
 const MAX_DISTANCIA_KM = 150;
@@ -201,10 +202,22 @@ const VendedorForm = () => {
     }
 
     setLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1200));
-    toast.success("Registro enviado. Nuestro equipo evaluará tu macrotúnel.");
-    setTimeout(() => navigate('/'), 2000);
-    setLoading(false);
+
+    try {
+      const result = await saveVendedorData(formData);
+
+      if (result.success) {
+        toast.success("¡Registro enviado exitosamente! Nuestro equipo evaluará tu macrotúnel.");
+        setTimeout(() => navigate('/'), 2000);
+      } else {
+        toast.error(`Error al guardar los datos: ${result.error}`);
+      }
+    } catch (error) {
+      console.error('Error en handleSubmit:', error);
+      toast.error("Error inesperado. Por favor intenta de nuevo.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

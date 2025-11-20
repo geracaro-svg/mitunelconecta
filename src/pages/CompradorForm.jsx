@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { ArrowLeft, MapPin, Loader2, AlertCircle } from "lucide-react";
+import { saveCompradorData } from "@/lib/supabase";
 
 const CENTRO_ZAMORA = { lat: 19.9855, lon: -102.2833 };
 const MAX_DISTANCIA_KM = 150;
@@ -113,7 +114,7 @@ const CompradorForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.nombre || !formData.email || !formData.telefono || !formData.hectareas || !formData.zona) {
       toast.error("Por favor completa todos los campos obligatorios");
       return;
@@ -130,10 +131,22 @@ const CompradorForm = () => {
     }
 
     setLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1200));
-    toast.success("Solicitud de compra registrada. Te contactaremos muy pronto.");
-    setTimeout(() => navigate('/'), 2000);
-    setLoading(false);
+
+    try {
+      const result = await saveCompradorData(formData);
+
+      if (result.success) {
+        toast.success("¡Solicitud de compra registrada exitosamente! Te contactaremos muy pronto.");
+        setTimeout(() => navigate('/'), 2000);
+      } else {
+        toast.error(`Error al guardar los datos: ${result.error}`);
+      }
+    } catch (error) {
+      console.error('Error en handleSubmit:', error);
+      toast.error("Error inesperado. Por favor intenta de nuevo.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

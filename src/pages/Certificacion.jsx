@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { ArrowLeft, Shield, CheckCircle, Camera, FileText, Loader2, CreditCard, Lock } from "lucide-react";
+import { saveCertificationData } from "@/lib/supabase";
 
 const Certificacion = () => {
   const navigate = useNavigate();
@@ -43,12 +44,25 @@ const Certificacion = () => {
 
   const handlePayment = async () => {
     setLoading(true);
-    toast.success("¡Pago simulado exitoso! En producción se integrará la pasarela real.");
 
-    await new Promise((resolve) => setTimeout(resolve, 1200));
-    toast.success("Solicitud de certificación registrada. Te contactaremos para coordinar la inspección.");
-    setTimeout(() => navigate('/'), 2000);
-    setLoading(false);
+    try {
+      // Guardar datos en Supabase
+      const result = await saveCertificationData(formData);
+
+      if (result.success) {
+        toast.success("¡Pago simulado exitoso! En producción se integrará la pasarela real.");
+        await new Promise((resolve) => setTimeout(resolve, 1200));
+        toast.success("Solicitud de certificación registrada. Te contactaremos para coordinar la inspección.");
+        setTimeout(() => navigate('/'), 2000);
+      } else {
+        toast.error(`Error al guardar la solicitud: ${result.error}`);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error('Error en handlePayment:', error);
+      toast.error("Error al procesar la solicitud. Inténtalo de nuevo.");
+      setLoading(false);
+    }
   };
 
   return (
@@ -282,6 +296,7 @@ const Certificacion = () => {
                       placeholder="4242 4242 4242 4242"
                       className="mt-1 pl-10"
                       disabled
+                      value=""
                     />
                     <CreditCard className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                   </div>
@@ -295,6 +310,7 @@ const Certificacion = () => {
                       placeholder="MM/AA"
                       className="mt-1"
                       disabled
+                      value=""
                     />
                   </div>
                   <div>
@@ -304,6 +320,7 @@ const Certificacion = () => {
                       placeholder="123"
                       className="mt-1"
                       disabled
+                      value=""
                     />
                   </div>
                 </div>
@@ -315,6 +332,7 @@ const Certificacion = () => {
                     placeholder="JUAN PEREZ"
                     className="mt-1"
                     disabled
+                    value=""
                   />
                 </div>
               </div>
