@@ -38,7 +38,6 @@ const VendedorForm = () => {
     precio_compra_original: "",
     cultivos_sembrados: "",
     motivo_venta: "",
-    urgencia_venta: "",
     expectativa_precio: "",
     factura_file: null
   });
@@ -443,36 +442,16 @@ const VendedorForm = () => {
                   />
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="urgencia_venta">¿Qué tan urgente es vender? *</Label>
-                    <Select
-                      value={formData.urgencia_venta}
-                      onValueChange={(value) => handleChange("urgencia_venta", value)}
-                    >
-                      <SelectTrigger className="mt-1">
-                        <SelectValue placeholder="Selecciona urgencia" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="urgente">Urgente (esta semana)</SelectItem>
-                        <SelectItem value="1_mes">En 1 mes</SelectItem>
-                        <SelectItem value="3_meses">En 3 meses</SelectItem>
-                        <SelectItem value="flexible">Flexible</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div>
-                    <Label htmlFor="expectativa_precio">¿Cuál es tu expectativa de precio? (MXN)</Label>
-                    <Input
-                      id="expectativa_precio"
-                      type="number"
-                      value={formData.expectativa_precio}
-                      onChange={(e) => handleChange("expectativa_precio", e.target.value)}
-                      placeholder="400000"
-                      className="mt-1"
-                    />
-                  </div>
+                <div>
+                  <Label htmlFor="expectativa_precio">¿Cuál es tu expectativa de precio? (MXN)</Label>
+                  <Input
+                    id="expectativa_precio"
+                    type="number"
+                    value={formData.expectativa_precio}
+                    onChange={(e) => handleChange("expectativa_precio", e.target.value)}
+                    placeholder="400000"
+                    className="mt-1"
+                  />
                 </div>
               </div>
 
