@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import { sendClientConfirmationEmail, sendAdminNotificationEmail } from './email'
 
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL
 const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY
@@ -75,7 +76,6 @@ export const saveVendedorData = async (formData) => {
           supplier: formData.proveedor_original,
           crops_grown: formData.cultivos_sembrados,
           reason_for_sale: formData.motivo_venta,
-          urgency: formData.urgencia_venta,
           expected_price: formData.expectativa_precio ? parseFloat(formData.expectativa_precio) : null,
           photos: formData.fotos_base64 || [],
           invoice_file: formData.factura_file
@@ -83,6 +83,19 @@ export const saveVendedorData = async (formData) => {
       ])
 
     if (error) throw error
+
+    // Send emails after successful database save
+    try {
+      await Promise.all([
+        sendClientConfirmationEmail(formData),
+        sendAdminNotificationEmail(formData)
+      ])
+      console.log('Emails sent successfully')
+    } catch (emailError) {
+      console.error('Error sending emails:', emailError)
+      // Don't fail the submission if emails fail
+    }
+
     return { success: true, data }
   } catch (error) {
     console.error('Error saving vendedor data:', error)
