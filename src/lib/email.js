@@ -1,11 +1,11 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.REACT_APP_RESEND_API_KEY || process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.REACT_APP_RESEND_API_KEY);
 
 export const sendClientConfirmationEmail = async (formData) => {
   try {
     const { data, error } = await resend.emails.send({
-      from: process.env.FROM_EMAIL || 'TunnelConecta <noreply@tunnelconecta.com>',
+      from: process.env.REACT_APP_FROM_EMAIL || 'TunnelConecta <noreply@tunnelconecta.com>',
       to: [formData.email],
       subject: '¡Gracias por registrarte en TunnelConecta!',
       html: `
@@ -56,10 +56,10 @@ export const sendClientConfirmationEmail = async (formData) => {
 
 export const sendAdminNotificationEmail = async (formData) => {
   try {
-    const adminEmail = process.env.ADMIN_EMAIL || 'admin@tunnelconecta.com';
+    const adminEmail = process.env.REACT_APP_ADMIN_EMAIL || 'admin@tunnelconecta.com';
 
     const { data, error } = await resend.emails.send({
-      from: process.env.FROM_EMAIL || 'TunnelConecta <noreply@tunnelconecta.com>',
+      from: process.env.REACT_APP_FROM_EMAIL || 'TunnelConecta <noreply@tunnelconecta.com>',
       to: [adminEmail],
       subject: `Nuevo registro de vendedor - ${formData.nombre}`,
       html: `
