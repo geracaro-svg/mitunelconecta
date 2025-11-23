@@ -18,6 +18,7 @@ const VendedorForm = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [ubicacionValida, setUbicacionValida] = useState(null);
+  const [locationLoading, setLocationLoading] = useState(false);
   const [errors, setErrors] = useState({});
   
   const [formData, setFormData] = useState({
@@ -80,56 +81,78 @@ const VendedorForm = () => {
     return distancia <= MAX_DISTANCIA_KM;
   };
 
-  const getLocation = () => {
+  const getLocation = async () => {
+    console.log("Intentando obtener ubicación...");
+
     if (!navigator.geolocation) {
       toast.error("Tu navegador no soporta geolocalización");
+      console.error("Geolocation not supported");
       return;
     }
 
-    toast.info("Obteniendo tu ubicación...", { duration: 3000 });
-    
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const lat = position.coords.latitude;
-        const lon = position.coords.longitude;
-        
-        setFormData(prev => ({ ...prev, lat, lon }));
-        
-        const esValida = validarUbicacion(lat, lon);
-        setUbicacionValida(esValida);
-        
-        if (esValida) {
-          toast.success("✓ Ubicación capturada - Dentro de nuestra zona de servicio");
-        } else {
-          toast.error("Tu ubicación está fuera de nuestra zona de servicio (Zamora +150km)");
-        }
-      },
-      (error) => {
-        let errorMessage = "No se pudo obtener la ubicación.";
-        
-        switch(error.code) {
-          case error.PERMISSION_DENIED:
-            errorMessage = "Permiso denegado. Por favor activa la ubicación en tu navegador.";
-            break;
-          case error.POSITION_UNAVAILABLE:
-            errorMessage = "Ubicación no disponible. Verifica tu conexión GPS.";
-            break;
-          case error.TIMEOUT:
-            errorMessage = "Tiempo agotado. Intenta de nuevo.";
-            break;
-          default:
-            errorMessage = "Error desconocido. Ingresa tu zona manualmente.";
-        }
-        
-        toast.error(errorMessage);
-        console.error("Geolocation error:", error);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0
+    // Check if we're on HTTPS or localhost
+    const isSecure = window.location.protocol === 'https:' || window.location.hostname === 'localhost';
+    if (!isSecure) {
+      toast.error("La geolocalización requiere HTTPS. Usa localhost o un sitio seguro.");
+      console.error("Geolocation requires HTTPS");
+      return;
+    }
+
+    setLocationLoading(true);
+    toast.info("Obteniendo tu ubicación...", { duration: 5000 });
+
+    try {
+      const position = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+          resolve,
+          reject,
+          {
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 60000
+          }
+        );
+      });
+
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+
+      console.log("Ubicación obtenida:", { lat, lon });
+
+      setFormData(prev => ({ ...prev, lat, lon }));
+
+      const esValida = validarUbicacion(lat, lon);
+      setUbicacionValida(esValida);
+
+      if (esValida) {
+        toast.success(`✓ Ubicación capturada: ${lat.toFixed(4)}, ${lon.toFixed(4)} - Dentro de zona de servicio`);
+      } else {
+        const distancia = calcularDistancia(lat, lon, CENTRO_ZAMORA.lat, CENTRO_ZAMORA.lon);
+        toast.error(`Tu ubicación está a ${distancia.toFixed(1)}km de Zamora. Fuera de zona de servicio (+150km)`);
       }
-    );
+    } catch (error) {
+      console.error("Geolocation error:", error);
+
+      let errorMessage = "No se pudo obtener la ubicación.";
+
+      switch(error.code) {
+        case error.PERMISSION_DENIED:
+          errorMessage = "Permiso denegado. Activa la ubicación en configuración del navegador y recarga la página.";
+          break;
+        case error.POSITION_UNAVAILABLE:
+          errorMessage = "Ubicación no disponible. Verifica GPS/conexión e intenta de nuevo.";
+          break;
+        case error.TIMEOUT:
+          errorMessage = "Tiempo agotado obteniendo ubicación. Verifica señal GPS.";
+          break;
+        default:
+          errorMessage = `Error de geolocalización: ${error.message || 'Desconocido'}`;
+      }
+
+      toast.error(errorMessage, { duration: 8000 });
+    } finally {
+      setLocationLoading(false);
+    }
   };
 
   const handleFileChange = (e) => {
@@ -477,9 +500,19 @@ const VendedorForm = () => {
                   data-testid="get-location-btn"
                   variant="outline"
                   onClick={getLocation}
-                  className="w-full border-emerald-300 hover:bg-emerald-50"
+                  disabled={locationLoading}
+                  className="w-full border-emerald-300 hover:bg-emerald-50 disabled:opacity-50"
                 >
-                  <MapPin className="mr-2 h-4 w-4" /> Capturar Ubicación GPS *
+                  {locationLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Obteniendo ubicación...
+                    </>
+                  ) : (
+                    <>
+                      <MapPin className="mr-2 h-4 w-4" /> Capturar Ubicación GPS *
+                    </>
+                  )}
                 </Button>
                 
                 {formData.lat && formData.lon && (
