@@ -324,7 +324,7 @@ const CompradorForm = () => {
                   </div>
 
                   <div>
-                    <Label htmlFor="tuneles_existentes">¿Cuántos macrotúneles tienes actualmente?</Label>
+                    <Label htmlFor="tuneles_existentes">¿Cuántas hectáreas de macrotúneles tienes actualmente?</Label>
                     <Input
                       id="tuneles_existentes"
                       type="number"
