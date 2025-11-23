@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
-import { sendClientConfirmationEmail, sendAdminNotificationEmail } from './email'
+import { sendClientConfirmationEmail, sendAdminNotificationEmail } from './emailService'
 
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL
 const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY
@@ -83,20 +83,16 @@ export const saveVendedorData = async (formData) => {
 
     if (error) throw error
 
-    // Send emails after successful database save using Supabase Edge Function
-    console.log('About to send emails via Edge Function...')
+    // Send emails after successful database save
+    console.log('About to send emails...')
     try {
-      const { data: emailData, error: emailError } = await supabase.functions.invoke('send-emails', {
-        body: { formData, type: 'vendedor' }
-      })
-
-      if (emailError) {
-        console.error('Error invoking send-emails function:', emailError)
-      } else {
-        console.log('Emails sent successfully via Edge Function:', emailData)
-      }
+      const [clientResult, adminResult] = await Promise.all([
+        sendClientConfirmationEmail(formData),
+        sendAdminNotificationEmail(formData)
+      ])
+      console.log('Emails sent successfully:', { clientResult, adminResult })
     } catch (emailError) {
-      console.error('Error sending emails via Edge Function:', emailError)
+      console.error('Error sending emails:', emailError)
       // Don't fail the submission if emails fail
     }
 
