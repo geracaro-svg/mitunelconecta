@@ -34,7 +34,6 @@ const VendedorForm = () => {
     lon: null,
     fotos_base64: [],
     // Nuevos campos
-    fecha_compra_original: "",
     proveedor_original: "",
     precio_compra_original: "",
     cultivos_sembrados: "",
@@ -397,29 +396,16 @@ const VendedorForm = () => {
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-gray-900">Historial de Compra (Opcional)</h3>
                 
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="fecha_compra_original">¿Cuándo lo compraste?</Label>
-                    <Input
-                      id="fecha_compra_original"
-                      type="date"
-                      value={formData.fecha_compra_original}
-                      onChange={(e) => handleChange("fecha_compra_original", e.target.value)}
-                      className="mt-1"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="precio_compra_original">¿En cuánto lo compraste? (MXN)</Label>
-                    <Input
-                      id="precio_compra_original"
-                      type="number"
-                      value={formData.precio_compra_original}
-                      onChange={(e) => handleChange("precio_compra_original", e.target.value)}
-                      placeholder="450000"
-                      className="mt-1"
-                    />
-                  </div>
+                <div>
+                  <Label htmlFor="precio_compra_original">¿En cuánto lo compraste? (MXN)</Label>
+                  <Input
+                    id="precio_compra_original"
+                    type="number"
+                    value={formData.precio_compra_original}
+                    onChange={(e) => handleChange("precio_compra_original", e.target.value)}
+                    placeholder="450000"
+                    className="mt-1"
+                  />
                 </div>
 
                 <div>

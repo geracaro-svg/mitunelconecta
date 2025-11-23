@@ -71,7 +71,6 @@ export const saveVendedorData = async (formData) => {
           longitude: formData.lon,
           plastic_included: formData.plastico === 'sí',
           plastic_age: formData.plastico_edad ? parseInt(formData.plastico_edad) : null,
-          purchase_date: formData.fecha_compra_original,
           purchase_price: formData.precio_compra_original ? parseFloat(formData.precio_compra_original) : null,
           supplier: formData.proveedor_original,
           crops_grown: formData.cultivos_sembrados,
