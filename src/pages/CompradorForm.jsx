@@ -136,6 +136,25 @@ const CompradorForm = () => {
       const result = await saveCompradorData(formData);
 
       if (result.success) {
+        // Enviar emails después de guardar exitosamente
+        try {
+          const emailResponse = await fetch('/api/send-comprador-email', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+          });
+
+          if (!emailResponse.ok) {
+            console.error('Error sending emails:', await emailResponse.text());
+            // No mostrar error al usuario, ya que los datos se guardaron correctamente
+          }
+        } catch (emailError) {
+          console.error('Error calling email API:', emailError);
+          // No mostrar error al usuario
+        }
+
         toast.success("¡Solicitud de compra registrada exitosamente! Te contactaremos muy pronto.");
         setTimeout(() => navigate('/'), 2000);
       } else {

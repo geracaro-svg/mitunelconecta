@@ -50,6 +50,25 @@ const Certificacion = () => {
       const result = await saveCertificationData(formData);
 
       if (result.success) {
+        // Enviar emails después de guardar exitosamente
+        try {
+          const emailResponse = await fetch('/api/send-certificacion-email', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+          });
+
+          if (!emailResponse.ok) {
+            console.error('Error sending emails:', await emailResponse.text());
+            // No mostrar error al usuario, ya que los datos se guardaron correctamente
+          }
+        } catch (emailError) {
+          console.error('Error calling email API:', emailError);
+          // No mostrar error al usuario
+        }
+
         toast.success("¡Pago simulado exitoso! En producción se integrará la pasarela real.");
         await new Promise((resolve) => setTimeout(resolve, 1200));
         toast.success("Solicitud de certificación registrada. Te contactaremos para coordinar la inspección.");

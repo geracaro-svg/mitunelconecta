@@ -207,6 +207,25 @@ const VendedorForm = () => {
       const result = await saveVendedorData(formData);
 
       if (result.success) {
+        // Enviar emails después de guardar exitosamente
+        try {
+          const emailResponse = await fetch('/api/send-vendedor-email', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+          });
+
+          if (!emailResponse.ok) {
+            console.error('Error sending emails:', await emailResponse.text());
+            // No mostrar error al usuario, ya que los datos se guardaron correctamente
+          }
+        } catch (emailError) {
+          console.error('Error calling email API:', emailError);
+          // No mostrar error al usuario
+        }
+
         toast.success("¡Registro enviado exitosamente! Nuestro equipo evaluará tu macrotúnel.");
         setTimeout(() => navigate('/'), 2000);
       } else {
