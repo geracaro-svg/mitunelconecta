@@ -85,12 +85,13 @@ export const saveVendedorData = async (formData) => {
     if (error) throw error
 
     // Send emails after successful database save
+    console.log('About to send emails...')
     try {
-      await Promise.all([
+      const [clientResult, adminResult] = await Promise.all([
         sendClientConfirmationEmail(formData),
         sendAdminNotificationEmail(formData)
       ])
-      console.log('Emails sent successfully')
+      console.log('Emails sent successfully:', { clientResult, adminResult })
     } catch (emailError) {
       console.error('Error sending emails:', emailError)
       // Don't fail the submission if emails fail

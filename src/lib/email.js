@@ -3,9 +3,12 @@ import { Resend } from 'resend';
 const resend = new Resend(process.env.REACT_APP_RESEND_API_KEY);
 
 export const sendClientConfirmationEmail = async (formData) => {
+  console.log('Sending client confirmation email to:', formData.email);
+  console.log('Resend API key available:', !!process.env.REACT_APP_RESEND_API_KEY);
+
   try {
     const { data, error } = await resend.emails.send({
-      from: process.env.REACT_APP_FROM_EMAIL || 'TunnelConecta <noreply@tunnelconecta.com>',
+      from: 'TunnelConecta <onboarding@resend.dev>',
       to: [formData.email],
       subject: '¡Gracias por registrarte en TunnelConecta!',
       html: `
@@ -55,11 +58,13 @@ export const sendClientConfirmationEmail = async (formData) => {
 };
 
 export const sendAdminNotificationEmail = async (formData) => {
+  console.log('Sending admin notification email to:', process.env.REACT_APP_ADMIN_EMAIL || 'admin@tunnelconecta.com');
+
   try {
     const adminEmail = process.env.REACT_APP_ADMIN_EMAIL || 'admin@tunnelconecta.com';
 
     const { data, error } = await resend.emails.send({
-      from: process.env.REACT_APP_FROM_EMAIL || 'TunnelConecta <noreply@tunnelconecta.com>',
+      from: 'TunnelConecta <onboarding@resend.dev>',
       to: [adminEmail],
       subject: `Nuevo registro de vendedor - ${formData.nombre}`,
       html: `
