@@ -84,16 +84,20 @@ export const saveVendedorData = async (formData) => {
 
     if (error) throw error
 
-    // Send emails after successful database save
-    console.log('About to send emails...')
+    // Send emails after successful database save using Supabase Edge Function
+    console.log('About to send emails via Edge Function...')
     try {
-      const [clientResult, adminResult] = await Promise.all([
-        sendClientConfirmationEmail(formData),
-        sendAdminNotificationEmail(formData)
-      ])
-      console.log('Emails sent successfully:', { clientResult, adminResult })
+      const { data: emailData, error: emailError } = await supabase.functions.invoke('send-emails', {
+        body: { formData, type: 'vendedor' }
+      })
+
+      if (emailError) {
+        console.error('Error invoking send-emails function:', emailError)
+      } else {
+        console.log('Emails sent successfully via Edge Function:', emailData)
+      }
     } catch (emailError) {
-      console.error('Error sending emails:', emailError)
+      console.error('Error sending emails via Edge Function:', emailError)
       // Don't fail the submission if emails fail
     }
 
