@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { ArrowLeft, Shield, CheckCircle, Camera, FileText, Loader2, CreditCard, Lock } from "lucide-react";
 import { saveCertificationData } from "@/lib/supabase";
@@ -13,7 +12,6 @@ import { saveCertificationData } from "@/lib/supabase";
 const Certificacion = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [accepted, setAccepted] = useState(false);
 
   const [formData, setFormData] = useState({
     nombre_vendedor: "",
@@ -32,10 +30,6 @@ const Certificacion = () => {
   const handleSubmit = async () => {
     if (!formData.nombre_vendedor || !formData.telefono || !formData.email || !formData.ubicacion) {
       toast.error("Por favor completa todos los campos obligatorios");
-      return;
-    }
-    if (!accepted) {
-      toast.error("Debes aceptar los términos y condiciones");
       return;
     }
     setLoading(true);
@@ -255,16 +249,6 @@ const Certificacion = () => {
                 </ol>
               </div>
 
-              <div className="flex items-start space-x-2">
-                <Checkbox 
-                  id="terms"
-                  checked={accepted}
-                  onCheckedChange={setAccepted}
-                />
-                <label htmlFor="terms" className="text-sm text-gray-600 cursor-pointer">
-                  Acepto los <span className="text-amber-600 underline">términos y condiciones</span> del servicio de certificación
-                </label>
-              </div>
 
               <Button
                 type="button"
@@ -276,7 +260,7 @@ const Certificacion = () => {
                 {loading ? (
                   <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Procesando...</>
                 ) : (
-                  "Solicitar Certificación"
+                  "Enviar Solicitud"
                 )}
               </Button>
             </div>
