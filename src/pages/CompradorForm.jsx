@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { ArrowLeft, MapPin, Loader2, AlertCircle } from "lucide-react";
 import { saveCompradorData } from "@/lib/supabase";
 import { sendClientConfirmationEmail, sendAdminNotificationEmail } from "@/lib/emailService";
+import { createLeadInZoho } from "@/lib/zohoService";
 
 const CENTRO_ZAMORA = { lat: 19.9855, lon: -102.2833 };
 const MAX_DISTANCIA_KM = 150;
@@ -148,6 +149,16 @@ const CompradorForm = () => {
         } catch (emailError) {
           console.error('Error sending emails for comprador:', emailError);
           // Don't fail the submission if emails fail
+        }
+
+        // Create lead in Zoho CRM
+        console.log('About to create Zoho lead for comprador...');
+        try {
+          const zohoResult = await createLeadInZoho(formData, 'comprador');
+          console.log('Zoho lead created successfully for comprador:', zohoResult);
+        } catch (zohoError) {
+          console.error('Error creating Zoho lead for comprador:', zohoError);
+          // Don't fail the submission if Zoho fails
         }
 
         toast.success("¡Solicitud de compra registrada exitosamente! Te contactaremos muy pronto.");
