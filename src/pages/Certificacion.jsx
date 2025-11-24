@@ -13,9 +13,8 @@ import { saveCertificationData } from "@/lib/supabase";
 const Certificacion = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [showPayment, setShowPayment] = useState(false);
   const [accepted, setAccepted] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     nombre_vendedor: "",
     telefono: "",
@@ -30,7 +29,7 @@ const Certificacion = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleContinue = () => {
+  const handleSubmit = async () => {
     if (!formData.nombre_vendedor || !formData.telefono || !formData.email || !formData.ubicacion) {
       toast.error("Por favor completa todos los campos obligatorios");
       return;
@@ -39,19 +38,12 @@ const Certificacion = () => {
       toast.error("Debes aceptar los términos y condiciones");
       return;
     }
-    setShowPayment(true);
-  };
-
-  const handlePayment = async () => {
     setLoading(true);
 
     try {
-      // Guardar datos en Supabase
       const result = await saveCertificationData(formData);
 
       if (result.success) {
-        toast.success("¡Pago simulado exitoso! En producción se integrará la pasarela real.");
-        await new Promise((resolve) => setTimeout(resolve, 1200));
         toast.success("Solicitud de certificación registrada. Te contactaremos para coordinar la inspección.");
         setTimeout(() => navigate('/'), 2000);
       } else {
@@ -59,7 +51,7 @@ const Certificacion = () => {
         setLoading(false);
       }
     } catch (error) {
-      console.error('Error en handlePayment:', error);
+      console.error('Error en handleSubmit:', error);
       toast.error("Error al procesar la solicitud. Inténtalo de nuevo.");
       setLoading(false);
     }
@@ -115,19 +107,18 @@ const Certificacion = () => {
           </Card>
         </div>
 
-        {/* Form or Payment */}
-        {!showPayment ? (
-          <Card className="border-2 border-amber-200 shadow-xl bg-white/90 backdrop-blur-sm">
+        {/* Certification Form */}
+        <Card className="border-2 border-amber-200 shadow-xl bg-white/90 backdrop-blur-sm">
             <CardHeader className="bg-gradient-to-r from-amber-500 to-orange-600 text-white rounded-t-lg">
               <CardTitle className="text-2xl">Solicitar Certificación</CardTitle>
             </CardHeader>
             <CardContent className="p-6 space-y-6">
             <div className="bg-amber-50 border-2 border-amber-300 rounded-lg p-4 mb-6">
-              <p className="text-amber-900 font-semibold mb-2">💰 Inversión: $5,000 MXN</p>
+              <p className="text-amber-900 font-semibold mb-2">GRATIS</p>
               <p className="text-sm text-amber-800">• Aumenta el valor de tu macrotúnel 10-15%</p>
               <p className="text-sm text-amber-800">• Vende más rápido con certificación</p>
               <p className="text-sm text-amber-800">• Badge "Certificado" en tu listado</p>
-              <p className="text-xs text-amber-700 mt-2">💡 Incluido GRATIS en membresía Gold</p>
+              <p className="text-xs text-amber-700 mt-2">💡 Incluido en membresía Gold</p>
             </div>
 
             <div className="space-y-6">
@@ -260,116 +251,18 @@ const Certificacion = () => {
                 type="button"
                 data-testid="submit-certificacion-btn"
                 disabled={loading}
-                onClick={handleContinue}
+                onClick={handleSubmit}
                 className="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-semibold py-6 rounded-xl shadow-lg hover:shadow-xl transition-all"
               >
                 {loading ? (
                   <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Procesando...</>
                 ) : (
-                  "Continuar al Pago - $5,000 MXN"
+                  "Solicitar Certificación"
                 )}
               </Button>
             </div>
           </CardContent>
         </Card>
-        ) : (
-          /* Payment Section (Simulated) */
-          <Card className="bg-white/90 backdrop-blur-sm border-2 border-amber-200 max-w-2xl mx-auto">
-            <CardHeader className="bg-gradient-to-r from-amber-500 to-orange-600 text-white rounded-t-lg">
-              <CardTitle className="text-2xl flex items-center">
-                <Lock className="w-6 h-6 mr-2" />
-                Pago Seguro
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-8 space-y-6">
-              <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4 mb-6">
-                <p className="text-blue-900 font-semibold">🔒 Conexión segura - Simulación de pago</p>
-                <p className="text-sm text-blue-800 mt-1">En producción se integrará Stripe/Mercado Pago</p>
-              </div>
-
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="card-number">Número de Tarjeta</Label>
-                  <div className="relative">
-                    <Input
-                      id="card-number"
-                      placeholder="4242 4242 4242 4242"
-                      className="mt-1 pl-10"
-                      disabled
-                      value=""
-                    />
-                    <CreditCard className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="expiry">Vencimiento</Label>
-                    <Input
-                      id="expiry"
-                      placeholder="MM/AA"
-                      className="mt-1"
-                      disabled
-                      value=""
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="cvc">CVC</Label>
-                    <Input
-                      id="cvc"
-                      placeholder="123"
-                      className="mt-1"
-                      disabled
-                      value=""
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <Label htmlFor="name">Nombre en la Tarjeta</Label>
-                  <Input
-                    id="name"
-                    placeholder="JUAN PEREZ"
-                    className="mt-1"
-                    disabled
-                    value=""
-                  />
-                </div>
-              </div>
-
-              <div className="bg-gray-50 rounded-lg p-4 space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Certificación TunnelConecta</span>
-                  <span className="font-semibold">$5,000.00 MXN</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">IVA (16%)</span>
-                  <span>$800.00 MXN</span>
-                </div>
-                <div className="border-t pt-2 flex justify-between text-lg font-bold">
-                  <span>Total</span>
-                  <span className="text-amber-600">$5,800.00 MXN</span>
-                </div>
-              </div>
-
-              <Button
-                onClick={handlePayment}
-                disabled={loading}
-                className="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-semibold py-6 rounded-xl shadow-lg text-lg"
-              >
-                {loading ? (
-                  <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Procesando...</>
-                ) : (
-                  "Pagar $5,800 MXN (SIMULADO)"
-                )}
-              </Button>
-
-              <p className="text-xs text-gray-500 text-center">
-                Al hacer clic en "Pagar", aceptas los términos del servicio de certificación TunnelConecta
-              </p>
-            </CardContent>
-          </Card>
-        )}
       </div>
     </div>
   );
