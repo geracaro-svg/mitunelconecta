@@ -46,6 +46,13 @@ const CompradorForm = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  const handlePhoneChange = (e) => {
+    const value = e.target.value;
+    // Only allow numbers
+    const numericValue = value.replace(/\D/g, '');
+    setFormData(prev => ({ ...prev, telefono: numericValue }));
+  };
+
   const calcularDistancia = (lat1, lon1, lat2, lon2) => {
     const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -231,10 +238,11 @@ const CompradorForm = () => {
                       id="telefono"
                       data-testid="telefono-input"
                       value={formData.telefono}
-                      onChange={(e) => handleChange("telefono", e.target.value)}
+                      onChange={handlePhoneChange}
                       placeholder="3312345678"
                       required
                       className="mt-1"
+                      type="tel"
                     />
                   </div>
                 </div>
