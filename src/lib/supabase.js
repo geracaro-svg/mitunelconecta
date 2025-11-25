@@ -77,8 +77,7 @@ export const saveVendedorData = async (formData) => {
           crops_grown: formData.cultivos_sembrados,
           reason_for_sale: formData.motivo_venta,
           expected_price: formData.expectativa_precio ? parseFloat(formData.expectativa_precio) : null,
-          photos: formData.fotos_base64 || [],
-          invoice_file: formData.factura_file
+          photos: formData.fotos_base64 || []
         }
       ])
 

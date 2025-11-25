@@ -38,8 +38,7 @@ const VendedorForm = () => {
     precio_compra_original: "",
     cultivos_sembrados: "",
     motivo_venta: "",
-    expectativa_precio: "",
-    factura_file: null
+    expectativa_precio: ""
   });
 
   const handleChange = (field, value) => {
@@ -176,21 +175,6 @@ const VendedorForm = () => {
     });
   };
 
-  const handleFacturaChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error("El archivo es muy grande. Máximo 5MB");
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setFormData(prev => ({ ...prev, factura_file: e.target.result }));
-        toast.success("Factura cargada correctamente");
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -438,19 +422,6 @@ const VendedorForm = () => {
                   />
                 </div>
 
-                <div>
-                  <Label htmlFor="factura">Factura Original (Opcional - PDF, máx 5MB)</Label>
-                  <input
-                    type="file"
-                    id="factura"
-                    accept="application/pdf,image/*"
-                    onChange={handleFacturaChange}
-                    className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer"
-                  />
-                  {formData.factura_file && (
-                    <p className="text-sm text-green-600 mt-1">✓ Factura cargada</p>
-                  )}
-                </div>
               </div>
 
               {/* Motivación de Venta */}
