@@ -56,28 +56,6 @@ const IndicePrecios = () => {
           </p>
         </div>
 
-        {/* Gold Required Message */}
-        <Card className="bg-gradient-to-r from-slate-100 to-gray-100 border-2 border-slate-400 mb-8">
-          <CardContent className="p-8 text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-slate-600 to-gray-700 rounded-2xl mb-4">
-              <BarChart3 className="w-8 h-8 text-white" />
-            </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-3">Contenido Exclusivo Gold</h3>
-            <p className="text-gray-700 mb-4">
-              Accede al Índice TunnelConecta de Precios completo con datos actualizados mensualmente, tendencias por región y análisis del mercado.
-            </p>
-            <p className="text-slate-800 font-semibold mb-6">
-              Solo disponible para miembros Gold
-            </p>
-            <Button
-              onClick={() => navigate('/gold')}
-              className="bg-gradient-to-r from-slate-600 to-gray-700 hover:from-slate-700 hover:to-gray-800 text-white font-semibold px-8 py-4"
-            >
-              Vuélvete Gold - $10,000/año
-            </Button>
-          </CardContent>
-        </Card>
-
         {loading ? (
           <div className="text-center py-12">
             <p className="text-gray-600">Cargando datos del índice...</p>
@@ -89,7 +67,6 @@ const IndicePrecios = () => {
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Vista Previa del ITP</h3>
               <p className="text-gray-600">
                 Aquí verás precios por región, tendencias mensuales y análisis detallado.
-                <br />Hazte Gold para acceso completo.
               </p>
             </CardContent>
           </Card>

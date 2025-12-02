@@ -35,7 +35,6 @@ const VendedorForm = () => {
     fotos_base64: [],
     // Nuevos campos
     proveedor_original: "",
-    precio_compra_original: "",
     cultivos_sembrados: "",
     motivo_venta: "",
     expectativa_precio: ""
@@ -398,18 +397,6 @@ const VendedorForm = () => {
               {/* Historial de Compra */}
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-gray-900">Historial de Compra (Opcional)</h3>
-                
-                <div>
-                  <Label htmlFor="precio_compra_original">¿En cuánto lo compraste? (MXN)</Label>
-                  <Input
-                    id="precio_compra_original"
-                    type="number"
-                    value={formData.precio_compra_original}
-                    onChange={(e) => handleChange("precio_compra_original", e.target.value)}
-                    placeholder="450000"
-                    className="mt-1"
-                  />
-                </div>
 
                 <div>
                   <Label htmlFor="proveedor_original">¿A quién se lo compraste? (Fabricante/Vendedor)</Label>

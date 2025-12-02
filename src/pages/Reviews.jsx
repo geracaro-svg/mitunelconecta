@@ -111,28 +111,6 @@ const Reviews = () => {
           </div>
         )}
 
-        {/* Gold Required Message */}
-        <Card className="bg-gradient-to-r from-amber-100 to-orange-100 border-2 border-amber-400 mb-8">
-          <CardContent className="p-8 text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl mb-4">
-              <Star className="w-8 h-8 text-white fill-white" />
-            </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-3">Contenido Exclusivo Gold</h3>
-            <p className="text-gray-700 mb-4">
-              Accede a reviews completas, estadísticas detalladas y calificaciones verificadas de todas las transacciones.
-            </p>
-            <p className="text-amber-900 font-semibold mb-6">
-              Solo disponible para miembros Gold
-            </p>
-            <Button
-              onClick={() => navigate('/gold')}
-              className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-semibold px-8 py-4"
-            >
-              Vuélvete Gold - $10,000/año
-            </Button>
-          </CardContent>
-        </Card>
-
         {/* Reviews List */}
         <div className="space-y-6">
           {loading ? (
@@ -146,7 +124,6 @@ const Reviews = () => {
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">Vista Previa</h3>
                 <p className="text-gray-600">
                   Aquí verás reviews verificadas de transacciones reales.
-                  <br />Hazte Gold para acceso completo.
                 </p>
               </CardContent>
             </Card>

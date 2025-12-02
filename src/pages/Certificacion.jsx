@@ -87,7 +87,7 @@ const Certificacion = () => {
           <div className="inline-flex items-center justify-center p-4 bg-amber-100 rounded-2xl mb-4">
             <Shield className="w-16 h-16 text-amber-600" />
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-3">Certificación TunnelConecta Gold</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-3">Certificación TunnelConecta</h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Certifica tu macrotúnel y aumenta su valor hasta un 15%. Genera confianza total en los compradores.
           </p>
@@ -131,7 +131,6 @@ const Certificacion = () => {
               <p className="text-sm text-amber-800">• Aumenta el valor de tu macrotúnel 10-15%</p>
               <p className="text-sm text-amber-800">• Vende más rápido con certificación</p>
               <p className="text-sm text-amber-800">• Badge "Certificado" en tu listado</p>
-              <p className="text-xs text-amber-700 mt-2">💡 Incluido en membresía Gold</p>
             </div>
 
             <div className="space-y-6">
