@@ -186,7 +186,7 @@ const Home = () => {
         <div className="max-w-6xl mx-auto px-4 py-16 space-y-16">
           {/* What is Túnel Usado */}
           <section className="text-center space-y-6">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">¿Qué es TúnelUSA2?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">¿Qué es TúnelUSA<span className="text-emerald-600">2</span>?</h2>
             <h3 className="text-xl md:text-2xl font-semibold text-emerald-700">La plataforma que revoluciona el mercado de agricultura protegida</h3>
             <div className="max-w-4xl mx-auto text-left space-y-4 text-gray-700 leading-relaxed">
               <p>
