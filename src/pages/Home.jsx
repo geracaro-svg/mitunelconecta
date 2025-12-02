@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Sprout, ShoppingCart, TrendingUp, Shield, Star } from "lucide-react";
-import { MOCK_TESTIMONIALS } from "@/data/mockData";
+import { Sprout, ShoppingCart, TrendingUp, Shield, Star, CheckCircle, Users, Award, Zap } from "lucide-react";
+import { MOCK_TESTIMONIALS, MOCK_SUCCESS_STORIES } from "@/data/mockData";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -132,6 +132,156 @@ const Home = () => {
               >
                 Buscar proyectos activos
               </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* Success Stories Section */}
+        <div className="py-16 bg-gradient-to-r from-lime-50 via-emerald-50 to-green-50">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center justify-center p-3 bg-lime-100 rounded-2xl mb-4">
+                <Award className="w-8 h-8 text-lime-600" />
+              </div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                Casos de Éxito Reales
+              </h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Historias de productores que transformaron sus proyectos con Túnel Usado
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8 mb-12">
+              {MOCK_SUCCESS_STORIES.slice(0, 6).map((story, index) => (
+                <Card key={index} className="bg-white/90 backdrop-blur-sm border-2 border-lime-100 hover:border-lime-300 transition-all duration-300 overflow-hidden group shadow-lg">
+                  <div className="relative">
+                    <img
+                      src={story.imagen_proyecto}
+                      alt={`Proyecto de ${story.nombre}`}
+                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute top-4 left-4 bg-lime-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                      {story.tipo}
+                    </div>
+                    {story.verificado && (
+                      <div className="absolute top-4 right-4 bg-green-600 text-white p-1 rounded-full">
+                        <CheckCircle className="w-4 h-4" />
+                      </div>
+                    )}
+                  </div>
+                  <CardContent className="p-6">
+                    <div className="flex items-center mb-3">
+                      <div className="flex">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className={`w-4 h-4 ${i < story.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+                          />
+                        ))}
+                      </div>
+                      <span className="ml-2 text-sm text-gray-600">({story.rating}/5)</span>
+                    </div>
+                    <p className="text-gray-700 mb-4 italic leading-relaxed">
+                      "{story.comentario}"
+                    </p>
+                    <div className="border-t pt-4">
+                      <p className="font-semibold text-gray-900 mb-1">{story.nombre}</p>
+                      <div className="flex items-center justify-between text-sm text-gray-600">
+                        <span>{story.ubicacion}</span>
+                        <span>{story.hectareas} hectáreas</span>
+                      </div>
+                      <p className="text-lime-700 font-medium text-sm mt-2">{story.beneficio}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <div className="text-center">
+              <p className="text-gray-600 mb-6">Únete a más de 50 productores exitosos en nuestra plataforma</p>
+              <Button
+                onClick={() => navigate('/vender')}
+                className="bg-gradient-to-r from-lime-500 to-green-600 hover:from-lime-600 hover:to-green-700 text-white font-semibold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all text-lg mr-4"
+              >
+                ¡Empieza tu historia de éxito!
+              </Button>
+              <Button
+                onClick={() => navigate('/comprar')}
+                variant="outline"
+                className="border-2 border-lime-500 text-lime-700 hover:bg-lime-50 font-semibold py-4 px-8 rounded-xl transition-all text-lg"
+              >
+                Encuentra tu oportunidad
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* High-Engagement CTA Section */}
+        <div className="py-20 bg-gradient-to-br from-emerald-600 via-green-600 to-lime-600 text-white">
+          <div className="container mx-auto px-4 text-center">
+            <div className="max-w-4xl mx-auto">
+              <div className="inline-flex items-center justify-center p-4 bg-white/10 rounded-2xl mb-8">
+                <Zap className="w-12 h-12 text-yellow-300" />
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                ¡Tu Éxito Comienza Hoy!
+              </h2>
+              <p className="text-xl md:text-2xl mb-8 opacity-90 leading-relaxed">
+                Únete a la comunidad de productores que ya transformaron sus proyectos agrícolas
+              </p>
+
+              {/* Stats */}
+              <div className="grid md:grid-cols-3 gap-8 mb-12">
+                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
+                  <Users className="w-12 h-12 mx-auto mb-4 text-yellow-300" />
+                  <div className="text-3xl font-bold mb-2">50+</div>
+                  <div className="text-lg">Productores Exitosos</div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
+                  <TrendingUp className="w-12 h-12 mx-auto mb-4 text-yellow-300" />
+                  <div className="text-3xl font-bold mb-2">40%</div>
+                  <div className="text-lg">Aumento en Producción</div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
+                  <Shield className="w-12 h-12 mx-auto mb-4 text-yellow-300" />
+                  <div className="text-3xl font-bold mb-2">100%</div>
+                  <div className="text-lg">Transacciones Verificadas</div>
+                </div>
+              </div>
+
+              {/* Featured Quote */}
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 mb-12 max-w-2xl mx-auto">
+                <blockquote className="text-lg italic mb-4">
+                  "Túnel Usado no solo me ayudó a vender mi estructura, sino que me conectó con oportunidades que nunca imaginé. ¡Es la plataforma del futuro agrícola!"
+                </blockquote>
+                <cite className="font-semibold">- Roberto Mendoza, Zamora</cite>
+              </div>
+
+              {/* Urgency and CTA */}
+              <div className="mb-8">
+                <p className="text-lg mb-6">
+                  🚀 <strong>Limited Time:</strong> Certificación gratuita para los primeros 20 registros de esta semana
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button
+                    onClick={() => navigate('/vender')}
+                    className="bg-yellow-400 hover:bg-yellow-500 text-emerald-900 font-bold py-6 px-12 rounded-2xl shadow-2xl hover:shadow-3xl transition-all text-xl transform hover:scale-105"
+                  >
+                    🔥 Registrar mi Macrotúnel GRATIS
+                  </Button>
+                  <Button
+                    onClick={() => navigate('/comprar')}
+                    variant="outline"
+                    className="border-2 border-white text-white hover:bg-white hover:text-emerald-700 font-bold py-6 px-12 rounded-2xl transition-all text-xl"
+                  >
+                    Buscar Oportunidades
+                  </Button>
+                </div>
+              </div>
+
+              <p className="text-sm opacity-75">
+                Sin compromisos • Proceso 100% seguro • Soporte personalizado
+              </p>
             </div>
           </div>
         </div>
