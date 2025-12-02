@@ -275,7 +275,7 @@ const Home = () => {
 
           {/* Why Choose Túnel Usado */}
           <section className="space-y-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center">¿Por qué elegir Túnel Usado?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center">¿Por qué elegir TúnelUSA<span className="text-emerald-600">2</span>?</h2>
 
             <div className="grid md:grid-cols-3 gap-8">
               <div className="text-center space-y-4">
