@@ -72,70 +72,6 @@ const Home = () => {
           </Card>
         </div>
 
-        {/* Testimonials Section */}
-        <div className="py-16 bg-gradient-to-r from-emerald-50 via-white to-lime-50">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center justify-center p-3 bg-emerald-100 rounded-2xl mb-4">
-                <Star className="w-8 h-8 text-emerald-600" />
-              </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Historias de Éxito en Túnel Usado
-              </h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Descubre cómo otros productores han transformado sus proyectos con nosotros
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-8 mb-12">
-              {MOCK_TESTIMONIALS.map((testimonial, index) => (
-                <Card key={index} className="bg-white/80 backdrop-blur-sm border-2 border-emerald-100 hover:border-emerald-300 transition-all duration-300 overflow-hidden group">
-                  <div className="relative">
-                    <img
-                      src={testimonial.imagen_proyecto}
-                      alt={`Proyecto en ${testimonial.ubicacion}`}
-                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute top-4 left-4 bg-emerald-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                      {testimonial.tipo}
-                    </div>
-                  </div>
-                  <CardContent className="p-6">
-                    <p className="text-gray-700 mb-4 italic">
-                      "{testimonial.comentario}"
-                    </p>
-                    <div className="flex items-center justify-between text-sm text-gray-600 mb-3">
-                      <span>Persona en {testimonial.ubicacion}</span>
-                      <span>{testimonial.hectareas} hectáreas</span>
-                    </div>
-                    <div className="bg-emerald-50 px-3 py-2 rounded-lg">
-                      <p className="text-emerald-800 font-semibold text-sm">
-                        {testimonial.beneficio}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-
-            <div className="text-center">
-              <Button
-                onClick={() => navigate('/vender')}
-                className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-semibold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all text-lg mr-4"
-              >
-                Regístrate y recibe información
-              </Button>
-              <Button
-                onClick={() => navigate('/comprar')}
-                variant="outline"
-                className="border-2 border-lime-500 text-lime-700 hover:bg-lime-50 font-semibold py-4 px-8 rounded-xl transition-all text-lg"
-              >
-                Buscar proyectos activos
-              </Button>
-            </div>
-          </div>
-        </div>
-
         {/* Success Stories Section */}
         <div className="py-16 bg-gradient-to-r from-lime-50 via-emerald-50 to-green-50">
           <div className="container mx-auto px-4">
@@ -216,76 +152,6 @@ const Home = () => {
           </div>
         </div>
 
-        {/* High-Engagement CTA Section */}
-        <div className="py-20 bg-gradient-to-br from-emerald-600 via-green-600 to-lime-600 text-white">
-          <div className="container mx-auto px-4 text-center">
-            <div className="max-w-4xl mx-auto">
-              <div className="inline-flex items-center justify-center p-4 bg-white/10 rounded-2xl mb-8">
-                <Zap className="w-12 h-12 text-yellow-300" />
-              </div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                ¡Tu Éxito Comienza Hoy!
-              </h2>
-              <p className="text-xl md:text-2xl mb-8 opacity-90 leading-relaxed">
-                Únete a la comunidad de productores que ya transformaron sus proyectos agrícolas
-              </p>
-
-              {/* Stats */}
-              <div className="grid md:grid-cols-3 gap-8 mb-12">
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
-                  <Users className="w-12 h-12 mx-auto mb-4 text-yellow-300" />
-                  <div className="text-3xl font-bold mb-2">50+</div>
-                  <div className="text-lg">Productores Exitosos</div>
-                </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
-                  <TrendingUp className="w-12 h-12 mx-auto mb-4 text-yellow-300" />
-                  <div className="text-3xl font-bold mb-2">40%</div>
-                  <div className="text-lg">Aumento en Producción</div>
-                </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
-                  <Shield className="w-12 h-12 mx-auto mb-4 text-yellow-300" />
-                  <div className="text-3xl font-bold mb-2">100%</div>
-                  <div className="text-lg">Transacciones Verificadas</div>
-                </div>
-              </div>
-
-              {/* Featured Quote */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 mb-12 max-w-2xl mx-auto">
-                <blockquote className="text-lg italic mb-4">
-                  "Túnel Usado no solo me ayudó a vender mi estructura, sino que me conectó con oportunidades que nunca imaginé. ¡Es la plataforma del futuro agrícola!"
-                </blockquote>
-                <cite className="font-semibold">- Roberto Mendoza, Zamora</cite>
-              </div>
-
-              {/* Urgency and CTA */}
-              <div className="mb-8">
-                <p className="text-lg mb-6">
-                  🚀 <strong>Limited Time:</strong> Certificación gratuita para los primeros 20 registros de esta semana
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button
-                    onClick={() => navigate('/vender')}
-                    className="bg-yellow-400 hover:bg-yellow-500 text-emerald-900 font-bold py-6 px-12 rounded-2xl shadow-2xl hover:shadow-3xl transition-all text-xl transform hover:scale-105"
-                  >
-                    🔥 Registrar mi Macrotúnel GRATIS
-                  </Button>
-                  <Button
-                    onClick={() => navigate('/comprar')}
-                    variant="outline"
-                    className="border-2 border-white text-white hover:bg-white hover:text-emerald-700 font-bold py-6 px-12 rounded-2xl transition-all text-xl"
-                  >
-                    Buscar Oportunidades
-                  </Button>
-                </div>
-              </div>
-
-              <p className="text-sm opacity-75">
-                Sin compromisos • Proceso 100% seguro • Soporte personalizado
-              </p>
-            </div>
-          </div>
-        </div>
-
         {/* Features */}
         <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           <button 
@@ -320,7 +186,7 @@ const Home = () => {
         <div className="max-w-6xl mx-auto px-4 py-16 space-y-16">
           {/* What is Túnel Usado */}
           <section className="text-center space-y-6">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">¿Qué es Túnel Usado?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">¿Qué es TúnelUSA2?</h2>
             <h3 className="text-xl md:text-2xl font-semibold text-emerald-700">La plataforma que revoluciona el mercado de agricultura protegida</h3>
             <div className="max-w-4xl mx-auto text-left space-y-4 text-gray-700 leading-relaxed">
               <p>
