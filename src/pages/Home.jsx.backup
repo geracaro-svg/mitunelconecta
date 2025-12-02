@@ -1,8 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Sprout, ShoppingCart, TrendingUp, Shield, Star } from "lucide-react";
-import { MOCK_TESTIMONIALS } from "@/data/mockData";
+import { Sprout, ShoppingCart, TrendingUp, Shield } from "lucide-react";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -70,70 +69,6 @@ const Home = () => {
               </Button>
             </CardContent>
           </Card>
-        </div>
-
-        {/* Testimonials Section */}
-        <div className="py-16 bg-gradient-to-r from-emerald-50 via-white to-lime-50">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center justify-center p-3 bg-emerald-100 rounded-2xl mb-4">
-                <Star className="w-8 h-8 text-emerald-600" />
-              </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Historias de Éxito en Túnel Usado
-              </h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Descubre cómo otros productores han transformado sus proyectos con nosotros
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-8 mb-12">
-              {MOCK_TESTIMONIALS.map((testimonial, index) => (
-                <Card key={index} className="bg-white/80 backdrop-blur-sm border-2 border-emerald-100 hover:border-emerald-300 transition-all duration-300 overflow-hidden group">
-                  <div className="relative">
-                    <img
-                      src={testimonial.imagen_proyecto}
-                      alt={`Proyecto en ${testimonial.ubicacion}`}
-                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute top-4 left-4 bg-emerald-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                      {testimonial.tipo}
-                    </div>
-                  </div>
-                  <CardContent className="p-6">
-                    <p className="text-gray-700 mb-4 italic">
-                      "{testimonial.comentario}"
-                    </p>
-                    <div className="flex items-center justify-between text-sm text-gray-600 mb-3">
-                      <span>Persona en {testimonial.ubicacion}</span>
-                      <span>{testimonial.hectareas} hectáreas</span>
-                    </div>
-                    <div className="bg-emerald-50 px-3 py-2 rounded-lg">
-                      <p className="text-emerald-800 font-semibold text-sm">
-                        {testimonial.beneficio}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-
-            <div className="text-center">
-              <Button
-                onClick={() => navigate('/vender')}
-                className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-semibold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all text-lg mr-4"
-              >
-                Regístrate y recibe información
-              </Button>
-              <Button
-                onClick={() => navigate('/comprar')}
-                variant="outline"
-                className="border-2 border-lime-500 text-lime-700 hover:bg-lime-50 font-semibold py-4 px-8 rounded-xl transition-all text-lg"
-              >
-                Buscar proyectos activos
-              </Button>
-            </div>
-          </div>
         </div>
 
         {/* Features */}
