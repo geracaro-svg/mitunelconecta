@@ -72,7 +72,7 @@ const Home = () => {
           </Card>
         </div>
 
-        {/* Success Stories Section */}
+        {/*
         <div className="py-16 bg-gradient-to-r from-lime-50 via-emerald-50 to-green-50">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
@@ -151,6 +151,7 @@ const Home = () => {
             </div>
           </div>
         </div>
+        */}
 
         {/* Features */}
         <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
