@@ -195,7 +195,7 @@ const CompradorForm = () => {
 
         <Card className="border-2 border-lime-200 shadow-xl bg-white/90 backdrop-blur-sm">
           <CardHeader className="bg-gradient-to-r from-lime-500 to-green-600 text-white rounded-t-lg">
-            <CardTitle className="text-2xl">Comprar Macrotúnel - TunnelConecta</CardTitle>
+            <CardTitle className="text-2xl">Comprar Macrotúnel - TúnelUSA<span className="text-emerald-600">2</span></CardTitle>
             <p className="text-lime-100 text-sm">Zona de servicio: Zamora, Michoacán +150km</p>
           </CardHeader>
           <CardContent className="p-6 space-y-6">
