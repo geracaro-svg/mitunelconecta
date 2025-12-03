@@ -72,7 +72,7 @@ export async function createZohoLead(accessToken, leadData, tipoLead) {
       Last_Name: leadData.nombre || leadData.contact_name || 'Lead',
       Email: leadData.email || leadData.contact_email,
       Phone: leadData.telefono || leadData.contact_phone,
-      Lead_Source: "Web - TunnelConecta",
+      Lead_Source: "Web - TunelUSAdo",
       Lead_Status: "Nuevo",
       Company: tipoLead === "vendedor" ? "Vendedor" : "Comprador",
       Description: description
