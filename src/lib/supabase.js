@@ -1,6 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
 import { sendClientConfirmationEmail, sendAdminNotificationEmail } from './emailService'
-import { createLeadInZoho } from './zohoService'
 
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL
 const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY
@@ -96,13 +95,22 @@ export const saveVendedorData = async (formData) => {
       // Don't fail the submission if emails fail
     }
 
-    // Create lead in Zoho CRM
+    // Create lead in Zoho CRM via API
     console.log('About to create Zoho lead...')
     try {
-      const zohoResult = await createLeadInZoho(formData, 'vendedor')
-      console.log('Zoho lead created successfully:', zohoResult)
+      const zohoResponse = await fetch('/api/create-zoho-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ leadData: formData, tipoLead: 'vendedor' })
+      });
+      const zohoResult = await zohoResponse.json();
+      if (zohoResponse.ok) {
+        console.log('Zoho lead created successfully:', zohoResult);
+      } else {
+        console.error('Error creating Zoho lead:', zohoResult);
+      }
     } catch (zohoError) {
-      console.error('Error creating Zoho lead:', zohoError)
+      console.error('Error calling Zoho API:', zohoError);
       // Don't fail the submission if Zoho fails
     }
 
