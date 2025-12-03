@@ -13,7 +13,7 @@ const Home = () => {
       <div className="container mx-auto px-4 py-12 md:py-20">
         <div className="text-center mb-16 space-y-6">
           <div className="inline-flex items-center justify-center p-3 bg-emerald-100 rounded-2xl mb-4">
-            <img src="/logo.png" alt="TúnelUSA2 Logo" className="w-12 h-12" />
+            <img src="/logo.png" alt="TúnelUSA2 Logo" className="w-36 h-36" />
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 tracking-tight">
             Compra y Vende Macrotúneles Usados Certificados
