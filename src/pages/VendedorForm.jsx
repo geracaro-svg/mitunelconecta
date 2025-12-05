@@ -230,6 +230,25 @@ const VendedorForm = () => {
           // No mostrar error al usuario
         }
 
+        // Create lead in Zoho CRM via API
+        console.log('About to create Zoho lead for vendedor...');
+        try {
+          const zohoResponse = await fetch('/api/create-zoho-lead', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ leadData: formData, tipoLead: 'vendedor' })
+          });
+          const zohoResult = await zohoResponse.json();
+          if (zohoResponse.ok) {
+            console.log('Zoho lead created successfully for vendedor:', zohoResult);
+          } else {
+            console.error('Error creating Zoho lead for vendedor:', zohoResult);
+          }
+        } catch (zohoError) {
+          console.error('Error calling Zoho API for vendedor:', zohoError);
+          // Don't fail the submission if Zoho fails
+        }
+
         toast.success("¡Registro enviado exitosamente! Nuestro equipo evaluará tu macrotúnel.");
         setTimeout(() => navigate('/'), 2000);
       } else {

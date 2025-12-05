@@ -57,6 +57,25 @@ const Certificacion = () => {
           // No mostrar error al usuario
         }
 
+        // Create lead in Zoho CRM via API
+        console.log('About to create Zoho lead for certificacion...');
+        try {
+          const zohoResponse = await fetch('/api/create-zoho-lead', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ leadData: formData, tipoLead: 'certificacion' })
+          });
+          const zohoResult = await zohoResponse.json();
+          if (zohoResponse.ok) {
+            console.log('Zoho lead created successfully for certificacion:', zohoResult);
+          } else {
+            console.error('Error creating Zoho lead for certificacion:', zohoResult);
+          }
+        } catch (zohoError) {
+          console.error('Error calling Zoho API for certificacion:', zohoError);
+          // Don't fail the submission if Zoho fails
+        }
+
         toast.success("Solicitud de certificación registrada. Te contactaremos para coordinar la inspección.");
         setTimeout(() => navigate('/'), 2000);
       } else {
