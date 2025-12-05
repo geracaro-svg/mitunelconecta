@@ -45,36 +45,63 @@ async function createZohoLead(accessToken, leadData, tipoLead) {
     return null;
   }
 
-  // Build description from lead data
-  let description = `Tipo: ${tipoLead === "vendedor" ? "Vendedor" : "Comprador"}\n`;
-  description += `Nombre: ${leadData.nombre || leadData.contact_name}\n`;
-  description += `Email: ${leadData.email || leadData.contact_email}\n`;
-  description += `Teléfono: ${leadData.telefono || leadData.contact_phone}\n`;
+  // Map field names based on tipoLead
+  let nombre, email, telefono, company, description;
 
-  if (tipoLead === "vendedor") {
-    description += `Hectáreas: ${leadData.hectareas || leadData.hectares}\n`;
-    description += `Ubicación: ${leadData.ubicacion_texto || leadData.location}\n`;
-    description += `Motivo de venta: ${leadData.motivo_venta || leadData.reason_for_sale}\n`;
-    if (leadData.expectativa_precio) {
-      description += `Precio esperado: $${leadData.expectativa_precio}\n`;
+  if (tipoLead === "certificacion") {
+    nombre = leadData.nombre_vendedor || leadData.contact_name;
+    email = leadData.email || leadData.contact_email;
+    telefono = leadData.telefono || leadData.contact_phone;
+    company = "Certificación";
+    description = `Tipo: Certificación\n`;
+    description += `Nombre: ${nombre}\n`;
+    description += `Email: ${email}\n`;
+    description += `Teléfono: ${telefono}\n`;
+    description += `Ubicación: ${leadData.ubicacion || leadData.tunnel_location}\n`;
+    if (leadData.hectareas) {
+      description += `Hectáreas: ${leadData.hectareas}\n`;
+    }
+    if (leadData.fecha_inspeccion) {
+      description += `Fecha preferida: ${leadData.fecha_inspeccion}\n`;
+    }
+    if (leadData.observaciones) {
+      description += `Observaciones: ${leadData.observaciones}\n`;
     }
   } else {
-    description += `Hectáreas necesarias: ${leadData.hectareas || leadData.hectares_needed}\n`;
-    description += `Zona: ${leadData.zona || leadData.location}\n`;
-    description += `Tipo de túnel: ${leadData.tipo || leadData.tunnel_type}\n`;
-    if (leadData.presupuesto) {
-      description += `Presupuesto: $${leadData.presupuesto}\n`;
+    nombre = leadData.nombre || leadData.contact_name;
+    email = leadData.email || leadData.contact_email;
+    telefono = leadData.telefono || leadData.contact_phone;
+    company = tipoLead === "vendedor" ? "Vendedor" : "Comprador";
+    description = `Tipo: ${tipoLead === "vendedor" ? "Vendedor" : "Comprador"}\n`;
+    description += `Nombre: ${nombre}\n`;
+    description += `Email: ${email}\n`;
+    description += `Teléfono: ${telefono}\n`;
+
+    if (tipoLead === "vendedor") {
+      description += `Hectáreas: ${leadData.hectareas || leadData.hectares}\n`;
+      description += `Ubicación: ${leadData.ubicacion_texto || leadData.location}\n`;
+      description += `Motivo de venta: ${leadData.motivo_venta || leadData.reason_for_sale}\n`;
+      if (leadData.expectativa_precio) {
+        description += `Precio esperado: $${leadData.expectativa_precio}\n`;
+      }
+    } else {
+      description += `Hectáreas necesarias: ${leadData.hectareas || leadData.hectares_needed}\n`;
+      description += `Zona: ${leadData.zona || leadData.location}\n`;
+      description += `Tipo de túnel: ${leadData.tipo || leadData.tunnel_type}\n`;
+      if (leadData.presupuesto) {
+        description += `Presupuesto: $${leadData.presupuesto}\n`;
+      }
     }
   }
 
   const zohoLead = {
     data: [{
-      Last_Name: leadData.nombre || leadData.contact_name || 'Lead',
-      Email: leadData.email || leadData.contact_email,
-      Phone: leadData.telefono || leadData.contact_phone,
+      Last_Name: nombre || 'Lead',
+      Email: email,
+      Phone: telefono,
       Lead_Source: "Web - TunelUSA2",
       Lead_Status: "Nuevo",
-      Company: tipoLead === "vendedor" ? "Vendedor" : "Comprador",
+      Company: company,
       Description: description
     }]
   };
