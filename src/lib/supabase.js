@@ -26,18 +26,6 @@ export const saveCompradorData = async (formData) => {
           contact_email: formData.email,
           contact_phone: formData.telefono,
           hectares_needed: parseFloat(formData.hectareas),
-          location: formData.zona,
-          latitude: formData.lat,
-          longitude: formData.lon,
-          tunnel_type: formData.tipo,
-          crops: formData.para_cultivo,
-          timeline: formData.cuando_inicia,
-          budget: formData.presupuesto ? parseFloat(formData.presupuesto) : null,
-          financing: formData.tiene_financiamiento,
-          experience_years: formData.primera_vez_tuneles === 'no' ? 1 : 0, // Simplificado
-          current_tunnels: parseInt(formData.tuneles_existentes) || 0,
-          priority: formData.prioridad_principal,
-          decision_timeline: formData.cuando_decide,
           comments: formData.comentarios
         }
       ])
@@ -66,16 +54,6 @@ export const saveVendedorData = async (formData) => {
           contact_email: formData.email,
           contact_phone: formData.telefono,
           hectares: parseFloat(formData.hectareas),
-          location: formData.ubicacion_texto,
-          latitude: formData.lat,
-          longitude: formData.lon,
-          plastic_included: formData.plastico === 'sí',
-          plastic_age: formData.plastico_edad ? parseInt(formData.plastico_edad) : null,
-          purchase_price: formData.precio_compra_original ? parseFloat(formData.precio_compra_original) : null,
-          supplier: formData.proveedor_original,
-          crops_grown: formData.cultivos_sembrados,
-          reason_for_sale: formData.motivo_venta,
-          expected_price: formData.expectativa_precio ? parseFloat(formData.expectativa_precio) : null,
           photos: formData.fotos_base64 || []
         }
       ])

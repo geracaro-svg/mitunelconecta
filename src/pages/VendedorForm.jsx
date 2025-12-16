@@ -26,18 +26,7 @@ const VendedorForm = () => {
     email: "",
     telefono: "",
     hectareas: "",
-    anios_uso: "",
-    plastico: "no",
-    plastico_edad: "",
-    ubicacion_texto: "",
-    lat: null,
-    lon: null,
-    fotos_base64: [],
-    // Nuevos campos
-    proveedor_original: "",
-    cultivos_sembrados: "",
-    motivo_venta: "",
-    expectativa_precio: ""
+    fotos_base64: []
   });
 
   const handleChange = (field, value) => {
@@ -178,30 +167,8 @@ const VendedorForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validar teléfono antes de enviar
-    const telefonoRegex = /^[0-9]{10}$/;
-    if (!telefonoRegex.test(formData.telefono)) {
-      toast.error("El teléfono debe tener exactamente 10 dígitos");
-      return;
-    }
-
-    if (!formData.nombre || !formData.email || !formData.telefono || !formData.hectareas || !formData.anios_uso || !formData.ubicacion_texto) {
+    if (!formData.nombre || !formData.email || !formData.telefono || !formData.hectareas) {
       toast.error("Por favor completa todos los campos obligatorios");
-      return;
-    }
-
-    if (!formData.lat || !formData.lon) {
-      toast.error("Por favor captura tu ubicación GPS");
-      return;
-    }
-
-    if (ubicacionValida === false) {
-      toast.error("Tu ubicación está fuera de nuestra zona de servicio");
-      return;
-    }
-
-    if (!formData.motivo_venta) {
-      toast.error("Por favor indica por qué estás vendiendo");
       return;
     }
 
@@ -284,7 +251,7 @@ const VendedorForm = () => {
               {/* Información Personal */}
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-gray-900">Información Personal</h3>
-                
+
                 <div>
                   <Label htmlFor="nombre">Nombre Completo *</Label>
                   <Input
@@ -322,209 +289,35 @@ const VendedorForm = () => {
                       onChange={(e) => handleChange("telefono", e.target.value)}
                       placeholder="3312345678"
                       required
-                      className={`mt-1 ${errors.telefono ? 'border-red-500' : ''}`}
+                      className="mt-1"
                     />
-                    {errors.telefono && (
-                      <p className="text-red-500 text-sm mt-1">{errors.telefono}</p>
-                    )}
                   </div>
                 </div>
               </div>
 
               {/* Información del Macrotúnel */}
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-900">Información del Macrotúnel</h3>
-                
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="hectareas">Hectáreas *</Label>
-                    <Input
-                      id="hectareas"
-                      data-testid="hectareas-input"
-                      type="number"
-                      step="0.1"
-                      value={formData.hectareas}
-                      onChange={(e) => handleChange("hectareas", e.target.value)}
-                      placeholder="2.5"
-                      required
-                      className="mt-1"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="anios_uso">Años de Uso *</Label>
-                    <Input
-                      id="anios_uso"
-                      data-testid="anios-uso-input"
-                      type="number"
-                      value={formData.anios_uso}
-                      onChange={(e) => handleChange("anios_uso", e.target.value)}
-                      placeholder="2"
-                      required
-                      className="mt-1"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <Label>¿Incluye plástico? *</Label>
-                    <RadioGroup
-                      value={formData.plastico}
-                      onValueChange={(value) => handleChange("plastico", value)}
-                      className="mt-2"
-                    >
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="sí" id="plastico-si" data-testid="plastico-si" />
-                        <Label htmlFor="plastico-si" className="cursor-pointer">Sí</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="no" id="plastico-no" data-testid="plastico-no" />
-                        <Label htmlFor="plastico-no" className="cursor-pointer">No</Label>
-                      </div>
-                    </RadioGroup>
-                  </div>
-
-                  {formData.plastico === "sí" && (
-                    <div>
-                      <Label htmlFor="plastico_edad">Antigüedad del Plástico (años)</Label>
-                      <Input
-                        id="plastico_edad"
-                        data-testid="plastico-edad-input"
-                        type="number"
-                        value={formData.plastico_edad}
-                        onChange={(e) => handleChange("plastico_edad", e.target.value)}
-                        placeholder="1"
-                        className="mt-1"
-                      />
-                    </div>
-                  )}
-                </div>
-
                 <div>
-                  <Label htmlFor="cultivos_sembrados">Cultivos que se han sembrado</Label>
+                  <Label htmlFor="hectareas">¿Número de ha a vender? *</Label>
                   <Input
-                    id="cultivos_sembrados"
-                    value={formData.cultivos_sembrados}
-                    onChange={(e) => handleChange("cultivos_sembrados", e.target.value)}
-                    placeholder="Ej: Fresas, frambuesas"
-                    className="mt-1"
-                  />
-                </div>
-              </div>
-
-              {/* Historial de Compra */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-900">Historial de Compra (Opcional)</h3>
-
-                <div>
-                  <Label htmlFor="proveedor_original">¿A quién se lo compraste? (Fabricante/Vendedor)</Label>
-                  <Input
-                    id="proveedor_original"
-                    value={formData.proveedor_original}
-                    onChange={(e) => handleChange("proveedor_original", e.target.value)}
-                    placeholder="Nombre del fabricante o vendedor"
-                    className="mt-1"
-                  />
-                </div>
-
-              </div>
-
-              {/* Motivación de Venta */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-900">Información de Venta</h3>
-                
-                <div>
-                  <Label htmlFor="motivo_venta">¿Por qué estás vendiendo? *</Label>
-                  <Textarea
-                    id="motivo_venta"
-                    value={formData.motivo_venta}
-                    onChange={(e) => handleChange("motivo_venta", e.target.value)}
-                    placeholder="Ej: Cambio de cultivo, retiro del negocio, necesito liquidez..."
-                    rows={3}
-                    required
-                    className="mt-1 resize-none"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="expectativa_precio">¿Cuál es tu expectativa de precio? (MXN)</Label>
-                  <Input
-                    id="expectativa_precio"
+                    id="hectareas"
+                    data-testid="hectareas-input"
                     type="number"
-                    value={formData.expectativa_precio}
-                    onChange={(e) => handleChange("expectativa_precio", e.target.value)}
-                    placeholder="400000"
-                    className="mt-1"
-                  />
-                </div>
-              </div>
-
-              {/* Ubicación */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-900">Ubicación del Rancho</h3>
-                
-                <div>
-                  <Label htmlFor="ubicacion_texto">Zona / Municipio *</Label>
-                  <Input
-                    id="ubicacion_texto"
-                    data-testid="ubicacion-input"
-                    value={formData.ubicacion_texto}
-                    onChange={(e) => handleChange("ubicacion_texto", e.target.value)}
-                    placeholder="Zamora, Michoacán"
+                    step="0.1"
+                    value={formData.hectareas}
+                    onChange={(e) => handleChange("hectareas", e.target.value)}
+                    placeholder="2.5"
                     required
                     className="mt-1"
                   />
                 </div>
-
-                <Button
-                  type="button"
-                  data-testid="get-location-btn"
-                  variant="outline"
-                  onClick={getLocation}
-                  disabled={locationLoading}
-                  className="w-full border-emerald-300 hover:bg-emerald-50 disabled:opacity-50"
-                >
-                  {locationLoading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Obteniendo ubicación...
-                    </>
-                  ) : (
-                    <>
-                      <MapPin className="mr-2 h-4 w-4" /> Capturar Ubicación GPS *
-                    </>
-                  )}
-                </Button>
-                
-                {formData.lat && formData.lon && (
-                  <div className={`p-3 rounded-lg ${
-                    ubicacionValida === true ? 'bg-green-50 border border-green-300' :
-                    ubicacionValida === false ? 'bg-red-50 border border-red-300' :
-                    'bg-gray-50 border border-gray-300'
-                  }`}>
-                    {ubicacionValida === true && (
-                      <p className="text-sm text-green-700 flex items-center">
-                        <span className="mr-2">✓</span> Ubicación capturada: {formData.lat.toFixed(4)}, {formData.lon.toFixed(4)}
-                        <br />
-                        <span className="text-xs">Dentro de nuestra zona de servicio</span>
-                      </p>
-                    )}
-                    {ubicacionValida === false && (
-                      <p className="text-sm text-red-700 flex items-start">
-                        <AlertCircle className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
-                        Tu ubicación está fuera de nuestra zona de servicio (Zamora +150km). Por ahora solo operamos en esta región.
-                      </p>
-                    )}
-                  </div>
-                )}
               </div>
 
               {/* Fotos */}
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-900">Fotos (máx 3)</h3>
-                <p className="text-sm text-gray-600">Panorámica, arcos y plástico</p>
-                
+                <h3 className="text-lg font-semibold text-gray-900">Fotos</h3>
+                <p className="text-sm text-gray-600">Sube fotos de tu macrotúnel (máx 3)</p>
+
                 <div className="border-2 border-dashed border-emerald-300 rounded-lg p-6 text-center hover:bg-emerald-50 transition-colors cursor-pointer">
                   <input
                     type="file"
@@ -550,7 +343,7 @@ const VendedorForm = () => {
               <Button
                 type="submit"
                 data-testid="submit-vendedor-btn"
-                disabled={loading || ubicacionValida === false}
+                disabled={loading}
                 className="w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-semibold py-6 rounded-xl shadow-lg hover:shadow-xl transition-all"
               >
                 {loading ? (
