@@ -244,7 +244,6 @@ const VendedorForm = () => {
         <Card className="border-2 border-emerald-200 shadow-xl bg-white/90 backdrop-blur-sm">
           <CardHeader className="bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-t-lg">
             <CardTitle className="text-2xl">Vender mi Macrotúnel - TúnelUSA<span className="text-emerald-600">2</span></CardTitle>
-            <p className="text-emerald-100 text-sm">Zona de servicio: Zamora, Michoacán +150km</p>
           </CardHeader>
           <CardContent className="p-6 space-y-6">
             <form onSubmit={handleSubmit} className="space-y-6">
