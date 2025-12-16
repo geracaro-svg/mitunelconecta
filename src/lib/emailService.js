@@ -16,9 +16,9 @@ export const sendClientConfirmationEmail = async (formData) => {
     const templateParams = {
       to_email: formData.email,
       to_name: formData.nombre,
-      from_name: 'TunnelConecta',
+      from_name: 'TunnelUSAdo',
       reply_to: 'tunelusado@gmail.com',
-      subject: '¡Gracias por registrarte en TunnelConecta!',
+      subject: '¡Gracias por registrarte en TunnelUSAdo!',
 
       // Client data
       client_name: formData.nombre,

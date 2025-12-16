@@ -10,12 +10,12 @@ async function testEmail() {
     console.log('Sending test email...');
 
     const { data, error } = await resend.emails.send({
-      from: 'TunnelConecta <onboarding@resend.dev>',
+      from: 'TunnelUSAdo <onboarding@resend.dev>',
       to: ['tunelusado@gmail.com'],
-      subject: 'Test Email from TunnelConecta',
+      subject: 'Test Email from TunnelUSAdo',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h1 style="color: #059669;">Test Email - TunnelConecta</h1>
+          <h1 style="color: #059669;">Test Email - TunnelUSAdo</h1>
 
           <p>This is a test email to verify that the email system is working.</p>
 
