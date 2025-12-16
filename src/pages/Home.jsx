@@ -301,11 +301,11 @@ const Home = () => {
 
               <div className="text-center space-y-4">
                 <div className="w-16 h-16 bg-lime-100 rounded-full flex items-center justify-center mx-auto">
-                  <Sprout className="w-8 h-8 text-lime-600" />
+                  <Zap className="w-8 h-8 text-lime-600" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900">Cobertura regional</h3>
+                <h3 className="text-xl font-semibold text-gray-900">Velocidad en transacciones</h3>
                 <p className="text-gray-600">
-                  Con cobertura en Zamora, Michoacán y 150km a la redonda, facilitamos transacciones locales que benefician a toda la comunidad productora.
+                  Conectamos compradores y vendedores de manera eficiente. El 85% de nuestras transacciones se cierran en menos de 7 días, maximizando tu tiempo y recursos.
                 </p>
               </div>
             </div>
