@@ -19,7 +19,7 @@ const Home = () => {
             Compra y Vende Macrotúneles Usados Certificados
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Marketplace de macrotúneles agrícolas en Zamora y región
+            Marketplace de macrotúneles agrícolas
           </p>
         </div>
 
