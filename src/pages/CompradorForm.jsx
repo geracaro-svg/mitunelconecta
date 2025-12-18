@@ -8,7 +8,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { saveCompradorData } from "@/lib/supabase";
-import { sendClientConfirmationEmail, sendAdminNotificationEmail } from "@/lib/emailService";
 
 const CompradorForm = () => {
   const navigate = useNavigate();
@@ -36,6 +35,7 @@ const CompradorForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('CompradorForm: Starting submission with data:', formData);
 
     if (!formData.nombre || !formData.email || !formData.telefono || !formData.hectareas) {
       toast.error("Por favor completa todos los campos obligatorios");
@@ -45,38 +45,51 @@ const CompradorForm = () => {
     setLoading(true);
 
     try {
+      console.log('CompradorForm: Saving to Supabase...');
       const result = await saveCompradorData(formData);
+      console.log('CompradorForm: Supabase result:', result);
 
       if (result.success) {
         // Send emails after successful database save
-        console.log('About to send emails for comprador...');
+        console.log('CompradorForm: About to send emails via API...');
         try {
-          const [clientResult, adminResult] = await Promise.all([
-            sendClientConfirmationEmail(formData),
-            sendAdminNotificationEmail(formData)
-          ]);
-          console.log('Emails sent successfully for comprador:', { clientResult, adminResult });
+          const emailResponse = await fetch('/api/send-comprador-email', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+          });
+          console.log('CompradorForm: Email API response status:', emailResponse.status);
+          if (!emailResponse.ok) {
+            console.error('CompradorForm: Error sending emails:', await emailResponse.text());
+            // No mostrar error al usuario, ya que los datos se guardaron correctamente
+          } else {
+            console.log('CompradorForm: Emails sent successfully');
+          }
         } catch (emailError) {
-          console.error('Error sending emails for comprador:', emailError);
-          // Don't fail the submission if emails fail
+          console.error('CompradorForm: Error calling email API:', emailError);
+          // No mostrar error al usuario
         }
 
         // Create lead in Zoho CRM via API
-        console.log('About to create Zoho lead for comprador...');
+        console.log('CompradorForm: About to create Zoho lead...');
         try {
           const zohoResponse = await fetch('/api/create-zoho-lead', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ leadData: formData, tipoLead: 'comprador' })
           });
+          console.log('CompradorForm: Zoho API response status:', zohoResponse.status);
           const zohoResult = await zohoResponse.json();
+          console.log('CompradorForm: Zoho result:', zohoResult);
           if (zohoResponse.ok) {
-            console.log('Zoho lead created successfully for comprador:', zohoResult);
+            console.log('CompradorForm: Zoho lead created successfully');
           } else {
-            console.error('Error creating Zoho lead for comprador:', zohoResult);
+            console.error('CompradorForm: Error creating Zoho lead');
           }
         } catch (zohoError) {
-          console.error('Error calling Zoho API for comprador:', zohoError);
+          console.error('CompradorForm: Error calling Zoho API:', zohoError);
           // Don't fail the submission if Zoho fails
         }
 
@@ -86,7 +99,7 @@ const CompradorForm = () => {
         toast.error(`Error al guardar los datos: ${result.error}`);
       }
     } catch (error) {
-      console.error('Error en handleSubmit:', error);
+      console.error('CompradorForm: Error en handleSubmit:', error);
       toast.error("Error inesperado. Por favor intenta de nuevo.");
     } finally {
       setLoading(false);

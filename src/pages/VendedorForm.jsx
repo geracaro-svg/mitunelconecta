@@ -166,6 +166,7 @@ const VendedorForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('VendedorForm: Starting submission with data:', formData);
 
     if (!formData.nombre || !formData.email || !formData.telefono || !formData.hectareas) {
       toast.error("Por favor completa todos los campos obligatorios");
@@ -175,10 +176,13 @@ const VendedorForm = () => {
     setLoading(true);
 
     try {
+      console.log('VendedorForm: Saving to Supabase...');
       const result = await saveVendedorData(formData);
+      console.log('VendedorForm: Supabase result:', result);
 
       if (result.success) {
         // Enviar emails después de guardar exitosamente
+        console.log('VendedorForm: About to send emails via API...');
         try {
           const emailResponse = await fetch('/api/send-vendedor-email', {
             method: 'POST',
@@ -187,32 +191,36 @@ const VendedorForm = () => {
             },
             body: JSON.stringify(formData),
           });
-
+          console.log('VendedorForm: Email API response status:', emailResponse.status);
           if (!emailResponse.ok) {
-            console.error('Error sending emails:', await emailResponse.text());
+            console.error('VendedorForm: Error sending emails:', await emailResponse.text());
             // No mostrar error al usuario, ya que los datos se guardaron correctamente
+          } else {
+            console.log('VendedorForm: Emails sent successfully');
           }
         } catch (emailError) {
-          console.error('Error calling email API:', emailError);
+          console.error('VendedorForm: Error calling email API:', emailError);
           // No mostrar error al usuario
         }
 
         // Create lead in Zoho CRM via API
-        console.log('About to create Zoho lead for vendedor...');
+        console.log('VendedorForm: About to create Zoho lead...');
         try {
           const zohoResponse = await fetch('/api/create-zoho-lead', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ leadData: formData, tipoLead: 'vendedor' })
           });
+          console.log('VendedorForm: Zoho API response status:', zohoResponse.status);
           const zohoResult = await zohoResponse.json();
+          console.log('VendedorForm: Zoho result:', zohoResult);
           if (zohoResponse.ok) {
-            console.log('Zoho lead created successfully for vendedor:', zohoResult);
+            console.log('VendedorForm: Zoho lead created successfully');
           } else {
-            console.error('Error creating Zoho lead for vendedor:', zohoResult);
+            console.error('VendedorForm: Error creating Zoho lead');
           }
         } catch (zohoError) {
-          console.error('Error calling Zoho API for vendedor:', zohoError);
+          console.error('VendedorForm: Error calling Zoho API:', zohoError);
           // Don't fail the submission if Zoho fails
         }
 
@@ -222,7 +230,7 @@ const VendedorForm = () => {
         toast.error(`Error al guardar los datos: ${result.error}`);
       }
     } catch (error) {
-      console.error('Error en handleSubmit:', error);
+      console.error('VendedorForm: Error en handleSubmit:', error);
       toast.error("Error inesperado. Por favor intenta de nuevo.");
     } finally {
       setLoading(false);

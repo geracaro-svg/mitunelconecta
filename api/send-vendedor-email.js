@@ -1,4 +1,6 @@
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -27,20 +29,6 @@ module.exports = async function handler(req, res) {
       expectativa_precio,
       factura_file
     } = req.body;
-
-    // Configurar transporter SMTP
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT),
-      secure: false, // true para 465, false para otros puertos
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-      tls: {
-        ciphers: 'SSLv3'
-      }
-    });
 
     // Preparar adjuntos de fotos
     const attachments = [];
@@ -145,8 +133,8 @@ module.exports = async function handler(req, res) {
     `;
 
     // Enviar email al admin
-    await transporter.sendMail({
-      from: `"Tunel Usado" <${process.env.SMTP_USER}>`,
+    await resend.emails.send({
+      from: 'Tunel Usado <onboarding@resend.dev>',
       to: process.env.ADMIN_EMAIL,
       subject: `🌱 Nuevo Vendedor: ${nombre} - ${hectareas} ha`,
       html: adminEmailHtml,
@@ -209,8 +197,8 @@ module.exports = async function handler(req, res) {
     `;
 
     // Enviar email de confirmación al cliente
-    await transporter.sendMail({
-      from: `"Tunel Usado" <${process.env.SMTP_USER}>`,
+    await resend.emails.send({
+      from: 'Tunel Usado <onboarding@resend.dev>',
       to: email,
       bcc: process.env.ADMIN_EMAIL,
       subject: "✅ Registro Exitoso - Tunel Usado",
