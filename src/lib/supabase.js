@@ -12,9 +12,9 @@ export const supabase = supabaseUrl && supabaseAnonKey
 // Funciones para guardar datos de formularios
 export const saveCompradorData = async (formData) => {
   if (!supabase) {
-    console.warn('Supabase not configured - saving to console only')
+    console.warn('Supabase not configured - cannot save data')
     console.log('Comprador data:', formData)
-    return { success: true, data: formData, mock: true }
+    return { success: false, error: 'Database not configured' }
   }
 
   try {
@@ -40,9 +40,9 @@ export const saveCompradorData = async (formData) => {
 
 export const saveVendedorData = async (formData) => {
   if (!supabase) {
-    console.warn('Supabase not configured - saving to console only')
+    console.warn('Supabase not configured - cannot save data')
     console.log('Vendedor data:', formData)
-    return { success: true, data: formData, mock: true }
+    return { success: false, error: 'Database not configured' }
   }
 
   try {
@@ -101,9 +101,9 @@ export const saveVendedorData = async (formData) => {
 
 export const saveCertificationData = async (formData) => {
   if (!supabase) {
-    console.warn('Supabase not configured - saving to console only')
+    console.warn('Supabase not configured - cannot save data')
     console.log('Certification data:', formData)
-    return { success: true, data: formData, mock: true }
+    return { success: false, error: 'Database not configured' }
   }
 
   try {
